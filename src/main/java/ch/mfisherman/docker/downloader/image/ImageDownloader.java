@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import java.net.URI;
 import java.net.http.HttpClient;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -33,11 +32,18 @@ public class ImageDownloader extends DockerDownloader {
         dockerClient = DockerClientBuilder.getInstance().build();
     }
 
+    @Override
+    public List<String> getSupportedArchitectures(List<String> allArchitectures) {
+        return allArchitectures;
+    }
+
+    @Override
     public List<String> getRepositories(String user) {
         List<SearchItem> items = dockerClient.searchImagesCmd(user).exec();
         return items.stream().map(SearchItem::getName).collect(Collectors.toList());
     }
 
+    @Override
     public List<String> getTags(String repositoryName) {
 
         HttpClient client = HttpClient.newHttpClient();
@@ -68,17 +74,18 @@ public class ImageDownloader extends DockerDownloader {
         }
     }
 
-
-    public void download(String repository, String tag, String platform) {
+    @Override
+    public void download(String repository, String tag, String architecture) {
         try {
-            System.out.println("Download: repository=" + repository + ", tag=" + tag + ", platform=" + platform);
-            dockerClient.pullImageCmd(repository).withTag(tag).withPlatform(platform).exec(new PullImageResultCallback())
+            System.out.println("Download: repository=" + repository + ", tag=" + tag + ", architecture=" + architecture);
+            dockerClient.pullImageCmd(repository).withTag(tag).withPlatform(architecture).exec(new PullImageResultCallback())
                     .awaitCompletion(10, TimeUnit.SECONDS);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void prune() {
         System.out.println("Prune images");
         dockerClient.pruneCmd(PruneType.IMAGES);
