@@ -43,7 +43,7 @@ There are a few command line arguments that are required. The most important one
 - `-t` or `-tags` (optional): the tags you want to download
 - `-u` or `-username` (optional/required): if the method `manifest`is selected, you must provide the username to download the images
 - `-p`or `-password` (optional/required): if the method `manifest` is selected, you must provide the password for the user to download the images
-- `-s` or `-sleep` (optional): the sleep time between two downloads
+- `-s` or `-sleep` (optional): the sleep time between two downloads (in seconds)
 
 
 ### Example
