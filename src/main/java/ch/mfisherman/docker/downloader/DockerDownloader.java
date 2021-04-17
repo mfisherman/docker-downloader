@@ -42,6 +42,7 @@ public abstract class DockerDownloader {
                     }
 
                     try {
+                        System.out.println("Sleep for " + args.sleep + " seconds");
                         Thread.sleep(args.sleep * 1000L);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
